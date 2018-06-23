@@ -15,6 +15,7 @@ import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
 import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.udacity.gradle.builditbigger.backend.myApi.MyApi;
+import com.udacity.gradle.builditbigger.javajokeslib.JavaJokes;
 
 import java.io.IOException;
 
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void tellJoke(View view) {
-        Toast.makeText(this, "derp", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, new JavaJokes().getJoke(), Toast.LENGTH_SHORT).show();
     }
 
 
@@ -69,11 +70,12 @@ public class MainActivity extends AppCompatActivity {
                         // options for running against local devappserver
                         // - 10.0.2.2 is localhost's IP address in Android emulator
                         // - turn off compression when running against local devappserver
-                        .setRootUrl("http://10.0.2.2:8080/_ah/api/")
+
+                        .setRootUrl("https://izartxobuilditbigger.appspot.com/_ah/api")
                         .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
                             @Override
                             public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
-                                abstractGoogleClientRequest.setDisableGZipContent(true);
+                                abstractGoogleClientRequest.setDisableGZipContent(false);
                             }
                         });
                 // end options for devappserver
@@ -85,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
             String name = params[0].second;
 
             try {
-                return myApiService.sayHi(name).execute().getData();
+                return myApiService.sayHi("gorka").execute().getData();
             } catch (IOException e) {
                 return e.getMessage();
             }

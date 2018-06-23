@@ -1,0 +1,50 @@
+{
+ "swagger": "2.0",
+ "info": {
+  "version": "1.0.0",
+  "title": "izartxobuilditbigger.appspot.com"
+ },
+ "host": "izartxobuilditbigger.appspot.com",
+ "basePath": "/_ah/api",
+ "schemes": [
+  "https"
+ ],
+ "consumes": [
+  "application/json"
+ ],
+ "produces": [
+  "application/json"
+ ],
+ "paths": {
+  "/myApi/v1/sayHi/{name}": {
+   "post": {
+    "operationId": "MyApiSayHi",
+    "parameters": [
+     {
+      "name": "name",
+      "in": "path",
+      "required": true,
+      "type": "string"
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "A successful response",
+      "schema": {
+       "$ref": "#/definitions/MyBean"
+      }
+     }
+    }
+   }
+  }
+ },
+ "definitions": {
+  "MyBean": {
+   "properties": {
+    "data": {
+     "type": "string"
+    }
+   }
+  }
+ }
+}
