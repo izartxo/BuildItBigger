@@ -1,6 +1,5 @@
 package com.udacity.gradle.builditbigger;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -9,12 +8,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.test.espresso.IdlingResource;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -22,6 +24,7 @@ import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
 import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.udacity.gradle.builditbigger.androidjavalibrary.AndroidMainActivity;
+import com.udacity.gradle.builditbigger.androidjavalibrary.AndroidMainActivityFragment;
 import com.udacity.gradle.builditbigger.backend.myApi.MyApi;
 import com.udacity.gradle.builditbigger.javajokeslib.JavaJokes;
 
@@ -30,17 +33,35 @@ import com.udacity.gradle.builditbigger.javajokeslib.JavaJokes;
 import java.io.IOException;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     @Nullable
     private MyIdlingResource mIdlingResource;
+
+    private DownloadListener callback;
+
+    private ProgressBar pb;
+
+    private TextView jokeText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        pb = findViewById(R.id.pBar);
+        pb.setVisibility(View.GONE);
 
 
+
+        callback = new DownloadListener() {
+            @Override
+            public void onCompleted(String joke) {
+
+
+               launchActivity(joke);
+
+            }
+        };
 
     }
 
@@ -69,8 +90,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void tellJoke(View view) {
 
-        //startActivity(new Intent(this, AndroidMainActivity.class));
-        new EndpointsAsyncTask().execute(new Pair<Context, String>(this, new JavaJokes().getJoke()));
+        pb.setVisibility(View.VISIBLE);
+
+        new EndpointsAsyncTask(callback).execute(new Pair<Context, String>(this, new JavaJokes().getJoke()));
 
 //        Toast.makeText(this, new JavaJokes().getJoke(), Toast.LENGTH_SHORT).show();
     }
@@ -79,11 +101,19 @@ public class MainActivity extends AppCompatActivity {
     class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> {
         private MyApi myApiService = null;
         private Context context;
+        private DownloadListener mCallback;
+        private MyIdlingResource myIdlingResource;
+
+        EndpointsAsyncTask(DownloadListener callback){
+            mCallback = callback;
+            mIdlingResource = (MyIdlingResource) getIdlingResource();
+
+        }
 
         @Override
         protected String doInBackground(Pair<Context, String>... params) {
 
-
+            mIdlingResource.setIdleState(false);
 
 
             if(myApiService == null) {  // Only do this once
@@ -111,15 +141,18 @@ public class MainActivity extends AppCompatActivity {
             try {
                 return myApiService.getJoke(name).execute().getData();
             } catch (IOException e) {
-                return e.getMessage();
+                return "";
+                //return e.getMessage();
             }
         }
 
         @Override
         protected void onPostExecute(String result) {
-
+           pb.setVisibility(View.GONE);
            Toast.makeText(context, result, Toast.LENGTH_LONG).show();
-           launchActivity(result);
+        //   launchActivity(result);
+            mIdlingResource.setIdleState(true);
+           mCallback.onCompleted(result);
         }
     }
 
@@ -127,8 +160,11 @@ public class MainActivity extends AppCompatActivity {
 
     void launchActivity(String result){
 
+       // MainActivityFragment.loadSuperAd();
+
         Intent intent = new Intent(getApplicationContext(), AndroidMainActivity.class);
         intent.putExtra("data", result);
+
         startActivity(intent);
     }
 
@@ -140,4 +176,10 @@ public class MainActivity extends AppCompatActivity {
         }
         return mIdlingResource;
     }
+
+    public interface DownloadListener{
+        public void onCompleted(String joke);
+    }
+
+
 }

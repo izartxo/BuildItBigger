@@ -2,12 +2,15 @@ package com.udacity.gradle.builditbigger;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 
 
 /**
@@ -15,7 +18,14 @@ import com.google.android.gms.ads.AdView;
  */
 public class MainActivityFragment extends Fragment {
 
+    private static InterstitialAd interstitialAd;
+
     public MainActivityFragment() {
+       /* MobileAds.initialize(getContext(),"ca-app-pub-3940256099942544~3347511713");
+
+        interstitialAd = new InterstitialAd(getContext());
+        interstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        interstitialAd.loadAd(new AdRequest.Builder().build());*/
     }
 
     @Override
@@ -33,10 +43,18 @@ public class MainActivityFragment extends Fragment {
                     .build();
             mAdView.loadAd(adRequest);
 
+
        }
 
 
 
         return root;
     }
+
+   /* public static void loadSuperAd(){
+        if(interstitialAd.isLoaded())
+            interstitialAd.show();
+        else
+            Log.d("xxxxxxxxxxxxxxxxxxx","-----------------------");
+    }*/
 }

@@ -4,6 +4,8 @@ import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 
+import org.apache.commons.logging.Log;
+
 import javax.inject.Named;
 
 /** An endpoint class we are exposing */
@@ -33,6 +35,7 @@ public class MyEndpoint {
     public MyBean getJoke(@Named("joke") String joke) {
         MyBean response = new MyBean();
         response.setData(joke);
+
 
         return response;
     }

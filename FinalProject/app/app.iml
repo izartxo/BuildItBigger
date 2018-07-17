@@ -201,5 +201,9 @@
     <orderEntry type="library" name="Gradle: android.arch.lifecycle:runtime-1.1.0" level="project" />
     <orderEntry type="module" module-name="androidjavalibrary" />
     <orderEntry type="module" module-name="javajokeslib" />
+    <orderEntry type="module" module-name="androidjavalibrary" />
+    <orderEntry type="module" module-name="javajokeslib" />
+    <orderEntry type="module" module-name="androidjavalibrary" />
+    <orderEntry type="module" module-name="javajokeslib" />
   </component>
 </module>
