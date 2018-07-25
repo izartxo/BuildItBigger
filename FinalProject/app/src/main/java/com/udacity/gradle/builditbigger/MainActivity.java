@@ -19,6 +19,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
@@ -44,21 +47,73 @@ public class MainActivity extends AppCompatActivity{
 
     private TextView jokeText;
 
+    private InterstitialAd interstitialAd;
+
+    private String mJoke = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         pb = findViewById(R.id.pBar);
         pb.setVisibility(View.GONE);
 
+        if(!BuildConfig.FLAVOR.equals("paid")) {
+            interstitialAd = new InterstitialAd(this);
+            interstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+            interstitialAd.loadAd(new AdRequest.Builder().build());
 
+            interstitialAd.setAdListener(new AdListener() {
+                @Override
+                public void onAdClosed() {
+                    launchActivity(mJoke);
+                    interstitialAd.loadAd(new AdRequest.Builder().build());
+                }
 
+            /*@Override
+            public void onAdFailedToLoad(int i) {
+
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+
+            }
+
+            @Override
+            public void onAdOpened() {
+
+            }
+
+            @Override
+            public void onAdLoaded() {
+
+            }
+
+            @Override
+            public void onAdClicked() {
+
+            }
+
+            @Override
+            public void onAdImpression() {
+
+            }*/
+            });
+
+        }
         callback = new DownloadListener() {
             @Override
             public void onCompleted(String joke) {
-
-
-               launchActivity(joke);
+                if(!BuildConfig.FLAVOR.equals("paid")) {
+                    mJoke = joke;
+                    if (interstitialAd.isLoaded())
+                        interstitialAd.show();
+                    else
+                        Log.d("################", "NO AD NO AD");
+                }else
+                    launchActivity(joke);
 
             }
         };
@@ -96,6 +151,8 @@ public class MainActivity extends AppCompatActivity{
 
 //        Toast.makeText(this, new JavaJokes().getJoke(), Toast.LENGTH_SHORT).show();
     }
+
+
 
 
     class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> {
@@ -150,6 +207,10 @@ public class MainActivity extends AppCompatActivity{
         protected void onPostExecute(String result) {
            pb.setVisibility(View.GONE);
            Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+           // Test data on app, joke_text invisible
+           TextView jokeText = (TextView) findViewById(R.id.joke_text);
+           jokeText.setText(result);
+           // Test data on app
         //   launchActivity(result);
             mIdlingResource.setIdleState(true);
            mCallback.onCompleted(result);

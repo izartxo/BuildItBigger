@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.cloud.tools.endpoints-framework-client'
 
+
 buildscript {
     repositories {
         jcenter()
@@ -14,6 +15,10 @@ buildscript {
 android {
     compileSdkVersion 27
     buildToolsVersion "26.0.3"
+
+    dexOptions {
+        javaMaxHeapSize "3g"
+    }
 
     defaultConfig {
         applicationId "com.udacity.gradle.builditbigger"
@@ -70,4 +75,47 @@ dependencies {
     implementation 'com.android.support.test.espresso:espresso-idling-resource:3.0.2';
 
 
+}
+
+task('gorkius'){
+    group 'localtest'
+    doLast{
+        print "kaixo"
+    }
+}
+
+task startLocalServer {
+    dependsOn ":backend:appengineStart"
+
+    doLast {
+        print "---Starting local server---"
+
+    }
+
+}
+
+task('runLocalTest'){
+    doLast{
+        print "---Running local test---"
+    }
+
+}
+runLocalTest.mustRunAfter startLocalServer
+
+task stopLocalServer {
+    dependsOn ":backend:appengineStop"
+
+    doLast{
+        print "---Stopping local server---"
+    }
+
+}
+stopLocalServer.mustRunAfter runLocalTest
+
+task gorka{
+
+    dependsOn  ":app:assembleFreeDebugAndroidTest"
+    dependsOn ":backend:appengineStart"
+    mustRunAfter ":backend:appengineStart"
+    finalizedBy ":backend:appengineStop"
 }
