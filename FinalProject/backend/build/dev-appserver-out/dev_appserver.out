@@ -1,21 +1,28 @@
 Warning: Google App Engine Java 7 runtime is deprecated.
 Warning: See https://cloud.google.com/appengine/docs/deprecations/java7
-Jul 25, 2018 6:53:40 PM com.google.appengine.tools.development.SystemPropertiesManager setSystemProperties
+Jul 26, 2018 6:47:35 PM com.google.appengine.tools.development.SystemPropertiesManager setSystemProperties
 INFO: Overwriting system property key 'java.util.logging.config.file', value '/usr/lib/google-cloud-sdk/platform/google_appengine/google/appengine/tools/java/config/sdk/logging.properties' with value 'WEB-INF/logging.properties' from '/home/izartxo/git_server/BuildItBigger.git/FinalProject/backend/build/exploded-backend/WEB-INF/appengine-web.xml'
-Jul 25, 2018 6:53:40 PM com.google.apphosting.utils.jetty.JettyLogger info
+Jul 26, 2018 6:47:35 PM com.google.apphosting.utils.jetty.JettyLogger info
 INFO: Logging to JettyLogger(null) via com.google.apphosting.utils.jetty.JettyLogger
-Jul 25, 2018 4:53:43 PM com.google.appengine.tools.development.IsolatedAppClassLoader checkWorkingDirectory
+Jul 26, 2018 4:47:36 PM com.google.appengine.tools.development.IsolatedAppClassLoader checkWorkingDirectory
 WARNING: Your working directory, (/home/izartxo/git_server/BuildItBigger.git/FinalProject/app) is not equal to your 
 web application root (/home/izartxo/git_server/BuildItBigger.git/FinalProject/backend/build/exploded-backend)
 You will not be able to access files from your working directory on the production server.
 
-Jul 25, 2018 4:53:46 PM com.google.apphosting.utils.jetty.JettyLogger info
+Jul 26, 2018 4:47:36 PM com.google.apphosting.utils.jetty.JettyLogger info
 INFO: jetty-6.1.x
-Jul 25, 2018 4:54:13 PM com.google.apphosting.utils.jetty.JettyLogger info
+Jul 26, 2018 4:47:37 PM com.google.apphosting.utils.jetty.JettyLogger info
 INFO: Started SelectChannelConnector@localhost:8080
-Jul 25, 2018 4:54:13 PM com.google.appengine.tools.development.AbstractModule startup
+Jul 26, 2018 4:47:37 PM com.google.appengine.tools.development.AbstractModule startup
 INFO: Module instance default is running at http://localhost:8080/
-Jul 25, 2018 4:54:13 PM com.google.appengine.tools.development.AbstractModule startup
+Jul 26, 2018 4:47:37 PM com.google.appengine.tools.development.AbstractModule startup
 INFO: The admin console is running at http://localhost:8080/_ah/admin
-Jul 25, 2018 6:54:13 PM com.google.appengine.tools.development.DevAppServerImpl doStart
+Jul 26, 2018 6:47:37 PM com.google.appengine.tools.development.DevAppServerImpl doStart
 INFO: Dev App Server is now running
+Jul 26, 2018 6:47:41 PM com.google.appengine.tools.development.AbstractModule shutdown
+INFO: Shutting down module instance default
+Shutting down.
+Jul 26, 2018 6:47:41 PM com.google.appengine.api.datastore.dev.LocalDatastoreService cleanupActiveServices
+INFO: scheduler shutting down.
+Jul 26, 2018 6:47:41 PM com.google.appengine.api.datastore.dev.LocalDatastoreService cleanupActiveServices
+INFO: scheduler finished shutting down.

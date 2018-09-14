@@ -17,11 +17,11 @@ public class AndroidMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_joke);
 
 
-        if (getIntent().hasExtra("data")){
+     /*   if (getIntent().hasExtra("data")){
             Toast.makeText(this, "DATA: " + getIntent().getStringExtra("data"), Toast.LENGTH_LONG).show();
-        }
+        }*/
 
-        Toast.makeText(this, "-----------", Toast.LENGTH_LONG).show();
+
     }
 
 

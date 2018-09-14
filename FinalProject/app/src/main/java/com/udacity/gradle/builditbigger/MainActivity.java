@@ -45,8 +45,6 @@ public class MainActivity extends AppCompatActivity{
 
     private ProgressBar pb;
 
-    private TextView jokeText;
-
     private InterstitialAd interstitialAd;
 
     private String mJoke = "";
@@ -149,7 +147,6 @@ public class MainActivity extends AppCompatActivity{
 
         new EndpointsAsyncTask(callback).execute(new Pair<Context, String>(this, new JavaJokes().getJoke()));
 
-//        Toast.makeText(this, new JavaJokes().getJoke(), Toast.LENGTH_SHORT).show();
     }
 
 
@@ -159,7 +156,7 @@ public class MainActivity extends AppCompatActivity{
         private MyApi myApiService = null;
         private Context context;
         private DownloadListener mCallback;
-        private MyIdlingResource myIdlingResource;
+
 
         EndpointsAsyncTask(DownloadListener callback){
             mCallback = callback;
@@ -176,10 +173,7 @@ public class MainActivity extends AppCompatActivity{
             if(myApiService == null) {  // Only do this once
                 MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
                         new AndroidJsonFactory(), null)
-                        // options for running against local devappserver
-                        // - 10.0.2.2 is localhost's IP address in Android emulator
-                        // - turn off compression when running against local devappserver
-
+                        // I have problems with GCE and anyone response my questions on forums..
                         .setRootUrl("https://izartxobuilditbigger.appspot.com/_ah/api")
                         .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
                             @Override
@@ -187,7 +181,7 @@ public class MainActivity extends AppCompatActivity{
                                 abstractGoogleClientRequest.setDisableGZipContent(false);
                             }
                         });
-                // end options for devappserver
+
 
                 myApiService = builder.build();
             }
@@ -199,29 +193,26 @@ public class MainActivity extends AppCompatActivity{
                 return myApiService.getJoke(name).execute().getData();
             } catch (IOException e) {
                 return "";
-                //return e.getMessage();
+
             }
         }
 
         @Override
         protected void onPostExecute(String result) {
            pb.setVisibility(View.GONE);
-           Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+           //Toast.makeText(context, result, Toast.LENGTH_LONG).show();
            // Test data on app, joke_text invisible
            TextView jokeText = (TextView) findViewById(R.id.joke_text);
            jokeText.setText(result);
-           // Test data on app
-        //   launchActivity(result);
-            mIdlingResource.setIdleState(true);
+
+           mIdlingResource.setIdleState(true);
            mCallback.onCompleted(result);
         }
     }
 
-
-
     void launchActivity(String result){
 
-       // MainActivityFragment.loadSuperAd();
+
 
         Intent intent = new Intent(getApplicationContext(), AndroidMainActivity.class);
         intent.putExtra("data", result);

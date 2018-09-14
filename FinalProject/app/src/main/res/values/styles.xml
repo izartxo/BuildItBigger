@@ -5,4 +5,9 @@
         <!-- Customize your theme here. -->
     </style>
 
+
+    <style name="Gorkas" >
+        <item name="android:textColor">#0000FF</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>
